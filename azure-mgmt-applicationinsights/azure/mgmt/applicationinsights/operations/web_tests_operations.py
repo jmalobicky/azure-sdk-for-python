@@ -221,14 +221,14 @@ class WebTestsOperations(object):
         response = self._client.send(
             request, header_parameters, body_content, stream=False, **operation_config)
 
-        if response.status_code not in [200]:
+        if response.status_code not in [200, 201]:
             exp = CloudError(response)
             exp.request_id = response.headers.get('x-ms-request-id')
             raise exp
 
         deserialized = None
 
-        if response.status_code == 200:
+        if response.status_code in [200, 201]:
             deserialized = self._deserialize('WebTest', response)
 
         if raw:
